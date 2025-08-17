@@ -1,18 +1,22 @@
-use clap::{Arg, command};
+use clap::{Arg, ArgGroup, command};
 
 fn main() {
     let match_result = command!()
+        .about("this is a test program")
+        .group(ArgGroup::new("person-register")
+        .args(["firstname", "lastname"])) 
         .arg(
             Arg::new("firstname")
                 .short('f')
                 .long("first-name")
-                .aliases(["fname", "first"]), //hidden alias
+                .aliases(["fname", "first"]) //hidden alias
+                .required(true), // make the argument required
         )
         .arg(
             Arg::new("lastname")
                 .short('l')
                 .long("last-name")
-                .aliases(["lname"]),
+                .aliases(["lname", "lastname"]),
         )
         .get_matches();
 
