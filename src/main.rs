@@ -6,6 +6,7 @@ use std::{
     path::{Path, PathBuf},
 };
 use strum::Display;
+use tabled::{Table, Tabled};
 
 #[derive(Debug, Parser)]
 #[command(/*-V*/version = "1.0", author = "Paul", /*-h and --help*/about="testing",long_about = "A simple CLI tool")]
@@ -18,7 +19,7 @@ enum EntryType {
     File,
     Dir,
 }
-#[derive(Debug)]
+#[derive(Debug, Tabled)]
 struct FileEntry {
     name: String,
     e_type: EntryType,
@@ -31,9 +32,9 @@ fn main() {
 
     if let Ok(does_exist) = fs::exists(&path) {
         if does_exist {
-            for file in get_files(&path) {
-                println!("{:?}", file);
-            }
+            let get_files = get_files(&path);
+            let mut table = Table::new(get_files);
+            print!("{}", table);
         } else {
             println!("{}", "path doesnt exist".red());
         }
@@ -42,7 +43,7 @@ fn main() {
         // return;
     }
 
-    print!("working?? path info -- {:?}\n", path);
+    print!("\n\nworking?? path info -- {:?}\n", path);
 }
 
 fn get_files(path: &Path) -> Vec<FileEntry> {
