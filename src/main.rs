@@ -1,5 +1,6 @@
 use anyhow::{Context, Result};
 use clap::Parser;
+use owo_colors::OwoColorize;
 use std::{fs, path::PathBuf};
 
 #[derive(Parser)]
@@ -16,8 +17,16 @@ fn main() -> Result<()> {
     let content = fs::read_to_string(&args.path)
         .with_context(|| format!("Could not read file `{:?}`", args.path))?;
 
-    println!("{}", content);
+    find_matches(&content, &args.pattern);
 
     Ok(())
     // dont use " Ok(()); "
+}
+
+fn find_matches(content: &str, pattern: &str) {
+    for line in content.lines() {
+        if line.contains(pattern) {
+            println!("{}", line);
+        }
+    }
 }
