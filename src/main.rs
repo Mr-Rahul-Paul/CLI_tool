@@ -26,7 +26,14 @@ fn main() -> Result<()> {
 fn find_matches(content: &str, pattern: &str) {
     for line in content.lines() {
         if line.contains(pattern) {
-            println!("{}", line);
+            //color the output
+            // Split the line by the pattern
+            let parts: Vec<&str> = line.split(pattern).collect();
+            
+          
+            let colored = parts.join(&pattern.red().bold().to_string());
+
+            println!("{}", colored);
         }
     }
 }
